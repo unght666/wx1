@@ -16,7 +16,7 @@ WORKDIR /app
 
 # 安装生产依赖
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install --omit=dev && npm cache clean --force
 
 # 从构建阶段复制 node_modules（可选，若需保留 dev 工具）
 # COPY --from=builder /app/node_modules ./node_modules
