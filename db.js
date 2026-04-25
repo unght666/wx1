@@ -193,6 +193,15 @@ async function init() {
   }
 }
 
+// ------------------- 同步模型到数据库（创建表） -------------------
+sequelize.sync({ alter: false })  // false 表示只创建不存在的表，不修改已有结构
+  .then(() => {
+    console.log('✅ 数据库表同步完成（已创建 users 表）');
+  })
+  .catch(err => {
+    console.error('❌ 数据库表同步失败:', err);
+  });
+  
 // ------------------- 导出 -------------------
 module.exports = {
   init,

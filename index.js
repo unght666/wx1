@@ -1,3 +1,5 @@
+
+const db = require('./db');
 const express = require('express');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
@@ -9,13 +11,6 @@ const { findUserByAccount, findUserByPhone, createUser, updateUserOpenid } = req
 const app = express();
 app.use(express.json());
 
-//---------------检查------------
-console.log('DB config:', {
-  database: process.env.DB_NAME,
-  username: process.env.DB_USER,    // ← 看是不是空
-  host: process.env.DB_HOST,
-  // 不要打印 password
-});
 
 // ------------------- 工具函数 -------------------
 
@@ -196,7 +191,11 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ code: 500, message: '服务器错误' });
   }
 });
-
+sequelize.sync().then(() => {
+  app.listen(3000, () => {
+    console.log('Server started');
+  });
+});
 // 启动服务
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
