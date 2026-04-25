@@ -1,12 +1,12 @@
+//index.js
 
-const db = require('./db');
 const express = require('express');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
-const { findUserByAccount, findUserByPhone, createUser, updateUserOpenid } = require('./db');
+const { findUserByAccount, findUserByPhone, createUser, updateUserOpenid, sequelize} = require('./db');
 
 const app = express();
 app.use(express.json());
@@ -191,13 +191,20 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ code: 500, message: '服务器错误' });
   }
 });
-sequelize.sync().then(() => {
-  app.listen(3000, () => {
-    console.log('Server started');
-  });
-});
-// 启动服务
+// index.js 文件末尾（删除原有的两处 listen，改为以下代码）
+
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 登录服务启动成功：http://localhost:${PORT}`);
-});
+
+// 先同步数据库，再启动服务
+sequelize.sync({ alter: false })
+  .then(() => {
+    console.log('✅ 数据库表同步成功');
+    app.listen(PORT, () => {
+      console.log(`🚀 登录服务启动成功：http://localhost:${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('❌ 数据库表同步失败:', err);
+    process.exit(1);
+  });
