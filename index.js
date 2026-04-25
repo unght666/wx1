@@ -9,6 +9,14 @@ const { findUserByAccount, findUserByPhone, createUser, updateUserOpenid } = req
 const app = express();
 app.use(express.json());
 
+//---------------检查------------
+console.log('DB config:', {
+  database: process.env.DB_NAME,
+  username: process.env.DB_USER,    // ← 看是不是空
+  host: process.env.DB_HOST,
+  // 不要打印 password
+});
+
 // ------------------- 工具函数 -------------------
 
 function generateToken(payload) {
