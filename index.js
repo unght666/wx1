@@ -82,10 +82,24 @@ app.post('/api/login', async (req, res) => {
         return res.status(401).json({ code: 401, message: '账号或密码错误' });
       }
 
-      const isValid = await bcrypt.compare(password, user.passwordHash);
+      const isValid = await bcrypt.compare(password, user.password_Hash);
       if (!isValid) {
         return res.status(401).json({ code: 401, message: '账号或密码错误' });
       }
+
+      // 在 /api/login 的密码分支中，添加：
+const user = await findUserByAccount(account);
+console.log('=== DEBUG LOGIN ===');
+console.log('account:', account);
+console.log('user found:', !!user);
+if (user) {
+  console.log('user.passwordHash type:', typeof user.passwordHash);
+  console.log('user.passwordHash value:', user.passwordHash);
+}
+console.log('password from req type:', typeof password);
+
+const isValid = await bcrypt.compare(password, user.passwordHash);
+console.log('isValid:', isValid);
 
       const token = generateToken({ userId: user.id, phone: user.phone });
       return res.json({
