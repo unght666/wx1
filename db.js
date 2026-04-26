@@ -85,8 +85,7 @@ function generateId() {
  * 根据账号（手机号或用户名）查找用户
  */
 async function findUserByAccount(account) {
-  console.log('Raw user from Sequelize:', user);
-  console.log('Keys:', user ? Object.keys(user) : []);
+
   const user = await User.findOne({
     where: {
       [Sequelize.Op.or]: [
