@@ -82,7 +82,7 @@ app.post('/api/login', async (req, res) => {
         return res.status(401).json({ code: 401, message: '账号或密码错误' });
       }
 
-      const isValid = await bcrypt.compare(password, user.password_Hash);
+      const isValid = await bcrypt.compare(password, user.passwordHash);
       if (!isValid) {
         return res.status(401).json({ code: 401, message: '账号或密码错误' });
       }
