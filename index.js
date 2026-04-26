@@ -88,7 +88,7 @@ app.post('/api/login', async (req, res) => {
       }
 
       // 在 /api/login 的密码分支中，添加：
-const user = await findUserByAccount(account);
+
 console.log('=== DEBUG LOGIN ===');
 console.log('account:', account);
 console.log('user found:', !!user);
@@ -98,7 +98,7 @@ if (user) {
 }
 console.log('password from req type:', typeof password);
 
-const isValid = await bcrypt.compare(password, user.passwordHash);
+
 console.log('isValid:', isValid);
 
       const token = generateToken({ userId: user.id, phone: user.phone });
