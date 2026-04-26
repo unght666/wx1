@@ -82,6 +82,12 @@ app.post('/api/login', async (req, res) => {
         return res.status(401).json({ code: 401, message: '账号或密码错误' });
       }
 
+       // 关键防御：确保 passwordHash 存在且为字符串
+  if (!user.passwordHash || typeof user.passwordHash !== 'string') {
+    console.error(`用户 ${account} 没有有效的 passwordHash，无法使用密码登录`);
+    return res.status(401).json({ code: 401, message: '账号或密码错误2' });
+  }
+
       const isValid = await bcrypt.compare(password, user.passwordHash);
       if (!isValid) {
         return res.status(401).json({ code: 401, message: '账号或密码错误' });
