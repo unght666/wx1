@@ -83,7 +83,7 @@ app.post('/api/login', async (req, res) => {
       }
 
        // 关键防御：确保 passwordHash 存在且为字符串
-  if (!user.passwordHash || typeof user.passwordHash !== 'string') {
+  if (!user.passwordHash || typeof user.password_Hash !== 'string') {
     console.error(`用户 ${account} 没有有效的 passwordHash，无法使用密码登录`);
     return res.status(401).json({ code: 401, message: '账号或密码错误2' });
   }
